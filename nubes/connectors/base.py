@@ -6,6 +6,10 @@ import six
 @six.add_metaclass(abc.ABCMeta)
 class BaseConnector(object):
 
+    @abc.abstractclassmethod
+    def name(cls):
+        pass
+
     @abc.abstractmethod
     def create_server(self, *kwargs):
         pass

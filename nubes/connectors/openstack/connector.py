@@ -11,18 +11,22 @@ class OpenstackConnector(base.BaseConnector):
                                                 password=password,
                                                 project_name=project_name)
 
-    def create_server(self, name, image, flavor, network_ids):
-        network_ids = network_ids or []
-        networks = []
-        for network_id in network_ids:
-            if isinstance(network_id, str):
-                networks.append({'uuid': network_id})
-            elif isinstance(network_id, dict) and 'uuid' in network_id:
-                networks.append(network_id)
+    @classmethod
+    def name(cls):
+        return "openstack"
+
+    def create_server(self, name, image, flavor, networks):
+        networks = networks or []
+        dict_networks = []
+        for network in networks:
+            if isinstance(network, str):
+                dict_networks.append({'uuid': network})
+            elif isinstance(network, dict) and 'uuid' in network:
+                dict_networks.append(network)
         server = self.connection.compute.create_server(name=name,
                                                        flavor_id=flavor,
                                                        image_id=image,
-                                                       networks=networks)
+                                                       networks=dict_networks)
         return server
 
     def list_servers(self):
