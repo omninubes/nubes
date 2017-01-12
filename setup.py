@@ -1,8 +1,16 @@
-#!/usr/bin/env python
-
 from setuptools import setup
 
 setup(
-    setup_requires=['pbr>=1.9', 'setuptools>=17.1'],
-    pbr=True,
+    name='nubes',
+    version='0.0.1',
+    packages=['nubes', 'nubes.cmd'],
+    url='',
+    license='',
+    author='',
+    author_email='',
+    description='',
+    install_requires=['openstacksdk>=0.9.2'],
+    entry_points={
+        'console_scripts': ['nubes=nubes.cmd:main']
+    }
 )
