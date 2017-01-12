@@ -22,4 +22,5 @@ def main():
         resource = args.resource + 's'
 
     method_name = '_'.join([args.action, resource])
-    return getattr(dispatch, method_name)()
+    result = getattr(dispatch, method_name)()
+    return str(result)

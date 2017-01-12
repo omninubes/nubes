@@ -1,5 +1,6 @@
 from openstack import connection
 
+from nubes.common import models
 from nubes.connectors import base
 
 
@@ -27,11 +28,11 @@ class OpenstackConnector(base.BaseConnector):
                                                        flavor_id=flavor,
                                                        image_id=image,
                                                        networks=dict_networks)
-        return server
+        return models.Server.transform(server)
 
     def list_servers(self):
         servers = list(self.connection.compute.servers())
-        return servers
+        return models.Server.transform(servers)
 
     def delete_server(self, uuid):
         self.connection.compute.delete_server(uuid)
