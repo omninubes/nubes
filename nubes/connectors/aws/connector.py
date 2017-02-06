@@ -1,6 +1,13 @@
 import boto3.session
 
+from nubes.common import models
 from nubes.connectors import base
+
+
+def transform_server(from_model):
+    return models.Server(uuid=from_model.instance_id, name='',
+                         flavor=from_model.instance_type,
+                         image=from_model.image_id)
 
 
 class AWSConnector(base.BaseConnector):
@@ -23,11 +30,13 @@ class AWSConnector(base.BaseConnector):
                                                     MinCount=min_count,
                                                     MaxCount=max_count,
                                                     **kwargs)
-        return server
+        if not server:
+            return
+        return transform_server(server[0])
 
     def list_servers(self):
         desc = self.ec2_client.describe_instances()
-        return desc
+        return desc['Reservations']['Instances']
 
     def delete_server(self, instance_id):
         self.ec2_resource.instances.filter(
